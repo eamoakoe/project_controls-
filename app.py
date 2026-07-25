@@ -29,34 +29,40 @@ framework, asset, page = render_sidebar()
 # HEADER
 # ==========================================
 render_header(
-    framework=framework,
-    asset=asset,
-    page=page
+    framework,
+    asset,
+    page
 )
 
 
 # ==========================================
 # PAGE ROUTING
 # ==========================================
-if page == "Overview":
+try:
 
-    render_overview(
-        framework=framework,
-        asset=asset
-    )
+    if page == "Overview":
 
-elif page == "Project Delivery":
+        render_overview(
+            framework,
+            asset
+        )
 
-    render_project_delivery(asset)
+    elif page == "Project Delivery":
 
-elif page == "Communications":
+        render_project_delivery(asset)
 
-    render_communications(asset)
+    elif page == "Communications":
 
-elif page == "Reports":
+        render_communications(asset)
 
-    render_reports(asset)
+    elif page == "Reports":
 
-else:
+        render_reports(asset)
 
-    st.warning("Page not found.")
+    else:
+
+        st.warning("Page not found.")
+
+except Exception as e:
+
+    st.error(f"Error loading page: {e}")
