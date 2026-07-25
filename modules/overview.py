@@ -4,8 +4,15 @@ import streamlit as st
 import pandas as pd
 
 
-def render_overview():
+def render_overview(framework=None, asset=None):
+
     st.title("Project Controls Dashboard")
+
+    if framework:
+        st.caption(f"Framework: {framework}")
+
+    if asset:
+        st.caption(f"Asset: {asset}")
 
     st.markdown("### Overview")
 
@@ -28,7 +35,6 @@ def render_overview():
 
     st.divider()
 
-    # Sample Project Data
     data = {
         "Project": [
             "Project A",
