@@ -198,12 +198,10 @@ def render_sidebar():
         # LOGO
         # ==================================
         if logo:
-
             st.markdown(
                 f"""
-                <div style="text-align:center;">
-                    }"
-                        width="110">
+                <div style="text-align:center; padding:10px 0 15px 0;">
+                    data:image/png;base64,{logo}="110">
                 </div>
                 """,
                 unsafe_allow_html=True
