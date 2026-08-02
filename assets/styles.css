@@ -15,8 +15,3 @@ section[data-testid="stSidebar"] {
     );
 }
 
-/* Sidebar text */
-
-section[data-testid="stSidebar"] * {
-    color: white;
-}
