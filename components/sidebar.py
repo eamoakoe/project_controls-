@@ -11,20 +11,16 @@ import os
 FRAMEWORKS = {
 
     "UU DD&B Framework": [
-
         "Ferry PS",
         "Flass Lane",
         "Tally Ho",
         "Rossall Outfall",
         "Eccleston Bridge"
-
     ],
 
     "UU Enterprise Framework": [
-
         "Pennington Flash",
         "Davyhulme ASP4"
-
     ]
 }
 
@@ -63,14 +59,13 @@ def render_next_deadline():
         day = int(row[month])
 
         try:
-
             deadline_date = datetime.date(
                 year,
                 today.month,
                 day
             )
 
-        except:
+        except Exception:
             continue
 
         days_remaining = (
@@ -81,10 +76,8 @@ def render_next_deadline():
 
             if (
                 min_days is None
-                or
-                days_remaining < min_days
+                or days_remaining < min_days
             ):
-
                 min_days = days_remaining
                 next_item = row
 
@@ -92,136 +85,45 @@ def render_next_deadline():
         return
 
     key = next_item["KEY"]
+    day = int(next_item[month])
 
-    st.markdown(
-        """
-        <div style="
-            font-size:12px;
-            color:white;
-            margin-bottom:5px;
-        ">
-            NEXT DEADLINE
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.markdown("### 🎯 Next Deadline")
 
     st.markdown(
         f"""
         <div style="
-            background:#1b1464;
+            background:#0f1e56;
             padding:12px;
-            border-radius:10px;
-            border-left:4px solid #ff5252;
-            margin-bottom:10px;
+            border-radius:8px;
+            border-left:4px solid #ff4d4d;
+            margin-top:5px;
         ">
-
             <div style="
-                color:white;
+                font-size:14px;
                 font-weight:600;
-                margin-bottom:5px;
+                color:white;
+                margin-bottom:6px;
             ">
-                🎯 {key}
+                {key}
             </div>
 
             <div style="
-                color:#d1d1d1;
-                font-size:13px;
+                color:#d9d9d9;
+                margin-bottom:6px;
             ">
-                {int(next_item[month])} {month}
+                → <strong>{day} {month}</strong>
             </div>
 
             <div style="
                 color:#ffd54f;
-                font-size:12px;
-                margin-top:5px;
+                font-size:13px;
             ">
-                ⏳ {min_days} days remaining
+                ⏳ In {min_days} day(s)
             </div>
-
         </div>
         """,
         unsafe_allow_html=True
     )
-
-
-# ==================================================
-# PROGRAMME TRACKER
-# ==================================================
-
-def render_programme_tracker():
-
-    file_path = "subcontract/contract_submission_dates.xlsx"
-
-    if not os.path.exists(file_path):
-        return
-
-    df = pd.read_excel(file_path)
-
-    df.columns = df.columns.str.strip()
-
-    today = datetime.datetime.today()
-
-    month = today.strftime("%B")
-    today_day = today.day
-
-    if month not in df.columns:
-        return
-
-    current = df[["KEY", month]].dropna()
-
-    st.markdown(
-        f"""
-        <div style="
-            font-size:12px;
-            color:white;
-            margin-bottom:8px;
-        ">
-            📅 {month.upper()} PROGRAMME
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    for _, row in current.iterrows():
-
-        key = row["KEY"]
-        day = int(row[month])
-
-        if day < today_day:
-            status = "✅"
-
-        elif day == today_day:
-            status = "⚠️"
-
-        else:
-            status = ""
-
-        st.markdown(
-            f"""
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                align-items:center;
-                background:#ffffff10;
-                padding:8px;
-                margin-bottom:4px;
-                border-radius:6px;
-                font-size:12px;
-                color:white;
-            ">
-
-                <span>{key}</span>
-
-                <span>
-                    <b>{day}</b>
-                    {status}
-                </span>
-
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
 
 
 # ==================================================
@@ -232,9 +134,9 @@ def render_sidebar():
 
     with st.sidebar:
 
-        # ----------------------------------------------
+        # ------------------------------------------
         # LOGO
-        # ----------------------------------------------
+        # ------------------------------------------
 
         if os.path.exists("assets/logo.png"):
 
@@ -243,43 +145,45 @@ def render_sidebar():
                 width=180
             )
 
-        # ----------------------------------------------
-        # FRAMEWORK
-        # ----------------------------------------------
+        st.markdown("---")
 
-        st.markdown("### FRAMEWORK")
+        # ------------------------------------------
+        # FRAMEWORK
+        # ------------------------------------------
+
+        st.markdown("### Framework")
 
         framework = st.radio(
             "",
-            list(FRAMEWORKS.keys()),
+            options=list(FRAMEWORKS.keys()),
             label_visibility="collapsed"
         )
 
         st.markdown("---")
 
-        # ----------------------------------------------
+        # ------------------------------------------
         # ASSET
-        # ----------------------------------------------
+        # ------------------------------------------
 
-        st.markdown("### ASSET")
+        st.markdown("### Asset")
 
         asset = st.radio(
             "",
-            FRAMEWORKS[framework],
+            options=FRAMEWORKS[framework],
             label_visibility="collapsed"
         )
 
         st.markdown("---")
 
-        # ----------------------------------------------
+        # ------------------------------------------
         # NAVIGATION
-        # ----------------------------------------------
+        # ------------------------------------------
 
-        st.markdown("### NAVIGATION")
+        st.markdown("### Navigation")
 
         page = st.radio(
             "",
-            [
+            options=[
                 "Overview",
                 "Framework Roadmap",
                 "Delivery & Programme",
@@ -293,18 +197,10 @@ def render_sidebar():
 
         st.markdown("---")
 
-        # ----------------------------------------------
-        # DEADLINE
-        # ----------------------------------------------
+        # ------------------------------------------
+        # NEXT DEADLINE
+        # ------------------------------------------
 
         render_next_deadline()
-
-        st.markdown("---")
-
-        # ----------------------------------------------
-        # PROGRAMME
-        # ----------------------------------------------
-
-        render_programme_tracker()
 
     return framework, asset, page
