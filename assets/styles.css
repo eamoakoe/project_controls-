@@ -20,7 +20,51 @@ section[data-testid="stSidebar"] {
         #050A30 100%
     );
 
-    width: 360px !important;
+    width: 340px !important;
+}
+
+
+/* ==========================================
+   SECTION HEADERS
+========================================== */
+
+section[data-testid="stSidebar"] label {
+
+    color: white !important;
+
+    font-size: 15px !important;
+
+    font-weight: 600 !important;
+}
+
+
+/* ==========================================
+   RADIO CONTAINERS
+========================================== */
+
+div[role="radiogroup"] {
+
+    background: rgba(255,255,255,0.06);
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    margin-bottom: 10px;
+}
+
+
+/* ==========================================
+   RADIO OPTION TEXT
+========================================== */
+
+div[role="radiogroup"] p {
+
+    color: white !important;
+
+    font-size: 15px !important;
+
+    font-weight: 500 !important;
 }
 
 
@@ -28,5 +72,21 @@ section[data-testid="stSidebar"] {
    SIDEBAR TEXT
 ========================================== */
 
-section[data-testid="stSidebar"] * {
-    color:
+section[data-testid="stSidebar"] {
+
+    color: white;
+}
+
+
+/* ==========================================
+   DIVIDERS
+========================================== */
+
+section[data-testid="stSidebar"] hr {
+
+    border-color: rgba(255,255,255,0.15);
+
+    margin-top: 18px;
+
+    margin-bottom: 18px;
+}
