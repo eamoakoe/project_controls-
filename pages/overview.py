@@ -6,7 +6,7 @@ from overview.ferry.next7days_cl32_ferry import render_next7days_table
 from overview.ferry.milestone_cl32_ferry import render_milestone_table
 
 
-def show_overview(asset, programme_df):
+def show_overview(asset):
 
     if asset != "Ferry PS":
         st.info(f"{asset} overview not built yet.")
