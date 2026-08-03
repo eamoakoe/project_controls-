@@ -1,9 +1,9 @@
 import streamlit as st
 
-from project_controls.overview.ferry.project_summary import render as render_project_summary
-from project_controls.overview.ferry.pie_card_ferry import render_pie_ferry
-from project_controls.overview.ferry.next7days_cl32_ferry import render_next7days_table
-from project_controls.overview.ferry.milestone_cl32_ferry import render_milestone_table
+from overview.ferry.project_summary import render as render_project_summary
+from overview.ferry.pie_card_ferry import render_pie_ferry
+from overview.ferry.next7days_cl32_ferry import render_next7days_table
+from overview.ferry.milestone_cl32_ferry import render_milestone_table
 
 
 def show_overview(asset, programme_df):
