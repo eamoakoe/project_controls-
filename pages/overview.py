@@ -14,44 +14,64 @@ def show_overview(asset):
         )
         return
 
-    # ==========================================
+    # ==================================================
     # PROJECT SUMMARY
-    # ==========================================
+    # ==================================================
 
     render_project_summary()
 
     st.markdown("---")
 
-    # ==========================================
-    # DELIVERY STATUS + LOOKAHEAD
-    # ==========================================
+    # ==================================================
+    # DELIVERY STATUS + NEXT 7 DAYS
+    # ==================================================
 
-    col1, col2 = st.columns([1, 1])
+    col1, col2 = st.columns(2)
 
     with col1:
 
-        st.markdown("## 📊 Delivery Status")
+        st.markdown(
+            """
+            ### 📊 Delivery Status
+            """
+        )
 
         st.info(
-            "Pie Chart Component Coming Next"
+            """
+            Delivery Status Pie Chart
+            """
         )
 
     with col2:
 
-        st.markdown("## 📅 Next 7 Days")
+        st.markdown(
+            """
+            ### 📅 Next 7 Days
+            """
+        )
 
         st.info(
-            "7-Day Lookahead Component Coming Next"
+            """
+            Upcoming activities issuing
+            within the next 7 days.
+            """
         )
 
     st.markdown("---")
 
-    # ==========================================
-    # DELIVERABLES
-    # ==========================================
+    # ==================================================
+    # DELIVERABLES & MILESTONES
+    # ==================================================
 
-    st.markdown("## 🚩 Deliverables & Milestones")
+    st.markdown(
+        """
+        ### 🚩 Deliverables & Milestones
+        """
+    )
 
     st.info(
-        "Milestone Component Coming Next"
+        """
+        CL31 vs CL32 milestone comparison
+        and deliverable performance table.
+        """
     )
