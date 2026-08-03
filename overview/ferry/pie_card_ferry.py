@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from your_pie_file import render_pie_ferry  # ✅ import your existing pie
 
 
 # =========================
