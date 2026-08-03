@@ -1,15 +1,17 @@
 import streamlit as st
 
-from overview.ferry.project_summary import render as render_project_summary
-from overview.ferry.pie_card_ferry import render_pie_ferry
-from overview.ferry.next7days_cl32_ferry import render_next7days_table
-from overview.ferry.milestone_cl32_ferry import render_milestone_table
+from overview.ferry.project_summary import (
+    render as render_project_summary
+)
 
 
 def show_overview(asset):
 
     if asset != "Ferry PS":
-        st.info(f"{asset} overview not built yet.")
+
+        st.info(
+            f"{asset} overview not built yet."
+        )
         return
 
     # ==========================================
@@ -28,15 +30,19 @@ def show_overview(asset):
 
     with col1:
 
-        st.markdown("## Delivery Status")
+        st.markdown("## 📊 Delivery Status")
 
-        render_pie_ferry(programme_df)
+        st.info(
+            "Pie Chart Component Coming Next"
+        )
 
     with col2:
 
-        st.markdown("## Next 7 Days")
+        st.markdown("## 📅 Next 7 Days")
 
-        render_next7days_table(programme_df)
+        st.info(
+            "7-Day Lookahead Component Coming Next"
+        )
 
     st.markdown("---")
 
@@ -44,4 +50,8 @@ def show_overview(asset):
     # DELIVERABLES
     # ==========================================
 
-    render_milestone_table(programme_df)
+    st.markdown("## 🚩 Deliverables & Milestones")
+
+    st.info(
+        "Milestone Component Coming Next"
+    )
