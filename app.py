@@ -1,54 +1,76 @@
 import streamlit as st
 
-from overview.ferry.project_summary import (
-    render as render_project_summary
+from components.sidebar import render_sidebar
+from pages.overview import show_overview
+
+# ==================================================
+# PAGE CONFIG
+# ==================================================
+
+st.set_page_config(
+    page_title="Project Controls Hub",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
+# ==================================================
+# LOAD CUSTOM CSS
+# ==================================================
 
-def show_overview(asset):
+try:
 
-    if asset != "Ferry PS":
+    with open("assets/styles.css") as f:
 
-        st.info(
-            f"{asset} overview not built yet."
+        st.markdown(
+            f"<style>{f.read()}</style>",
+            unsafe_allow_html=True
         )
 
-        return
+except FileNotFoundError:
 
-    # ==========================================
-    # PROJECT SUMMARY
-    # ==========================================
+    st.warning("styles.css not found")
 
-    render_project_summary()
+# ==================================================
+# SIDEBAR
+# ==================================================
 
-    st.markdown("---")
+framework, asset, page = render_sidebar()
 
-    # ==========================================
-    # PLACEHOLDERS
-    # ==========================================
+# ==================================================
+# ROUTING
+# ==================================================
 
-    col1, col2 = st.columns(2)
+if page == "Overview":
 
-    with col1:
+    show_overview(asset)
 
-        st.markdown("## 📊 Delivery Status")
+elif page == "Framework Roadmap":
 
-        st.info(
-            "Pie chart component coming next."
-        )
+    st.subheader("Framework Roadmap")
+    st.info("Framework Roadmap page coming next")
 
-    with col2:
+elif page == "Delivery & Programme":
 
-        st.markdown("## 📅 Next 7 Days")
+    st.subheader("Delivery & Programme")
+    st.info("Delivery & Programme page coming next")
 
-        st.info(
-            "7-day lookahead component coming next."
-        )
+elif page == "Communications":
 
-    st.markdown("---")
+    st.subheader("Communications")
+    st.info("Communications page coming next")
 
-    st.markdown("## 🚩 Deliverables & Milestones")
+elif page == "Documents":
 
-    st.info(
-        "Milestone and deliverables component coming next."
-    )
+    st.subheader("Documents")
+    st.info("Documents page coming next")
+
+elif page == "Reports":
+
+    st.subheader("Reports")
+    st.info("Reports page coming next")
+
+elif page == "Settings":
+
+    st.subheader("Settings")
+    st.info("Settings page coming next")
