@@ -44,10 +44,7 @@ framework, asset, page = render_sidebar()
 
 if page == "Overview":
 
-    show_overview(
-        framework=framework,
-        asset=asset
-    )
+    show_overview(asset)
 
 elif page == "Framework Roadmap":
 
