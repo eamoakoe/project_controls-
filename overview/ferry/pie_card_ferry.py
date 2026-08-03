@@ -165,3 +165,6 @@ def render_milestone_table(df):
 
     # ✅ ✅ ✅ SHOW PIE ABOVE TABLE
     st.markdown("### 📊 Delivery Status (Current)")
+
+    def render_pie_ferry(df):
+        render_milestone_table(df)
