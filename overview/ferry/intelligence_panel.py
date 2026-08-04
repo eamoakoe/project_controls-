@@ -4,43 +4,56 @@ import pandas as pd
 
 def render(df):
 
+    # ==================================================
+    # VALIDATION
+    # ==================================================
+
     if df is None or df.empty:
         st.warning("No programme data available.")
         return
 
     df = df.copy()
-    df.columns = df.columns.astype(str).str.strip()
+
+    df.columns = (
+        df.columns
+        .astype(str)
+        .str.strip()
+    )
 
     required_columns = [
-        "BL1 Finish",
+        "Activity Name",
         "Finish",
+        "BL1 Finish",
         "Total Float",
         "Activity % Complete"
     ]
 
     missing = [
-        col for col in required_columns
+        col
+        for col in required_columns
         if col not in df.columns
     ]
 
     if missing:
+
         st.error(
-            f"Missing required columns: {', '.join(missing)}"
+            f"Missing columns: {', '.join(missing)}"
         )
+
         return
 
-    # ========================================
-    # CLEAN DATA
-    # ========================================
+    # ==================================================
+    # DATA CLEANING
+    # ==================================================
 
-    df["BL1 Finish"] = pd.to_datetime(
-        df["BL1 Finish"],
+    df["Finish"] = pd.to_datetime(
+        df["Finish"],
         errors="coerce",
         dayfirst=True
     )
 
-    df["Finish"] = pd.to_datetime(
-        df["Finish"],
+    df["BL1 Finish"] = pd.to_datetime(
+        df["BL1 Finish"],
         errors="coerce",
         dayfirst=True
     )
@@ -62,9 +75,9 @@ def render(df):
         errors="coerce"
     ).fillna(0)
 
-    # ========================================
-    # KPI CALCULATIONS
-    # ========================================
+    # ==================================================
+    # PROGRAMME KPI
+    # ==================================================
 
     baseline_finish = df["BL1 Finish"].max()
 
@@ -78,13 +91,17 @@ def render(df):
         df["Total Float"].min()
     )
 
-    outstanding = len(
-        df[df["Activity % Complete"] < 100]
+    incomplete_df = df[
+        df["Activity % Complete"] < 100
+    ]
+
+    outstanding_count = len(
+        incomplete_df
     )
 
-    # ========================================
+    # ==================================================
     # HEALTH
-    # ========================================
+    # ==================================================
 
     if variance_days <= 7 and terminal_float > 0:
 
@@ -101,32 +118,101 @@ def render(df):
         health = "RED"
         colour = "#ef4444"
 
-    # ========================================
-    # PROJECT INFORMATION
-    # ========================================
+    # ==================================================
+    # CURRENT STAGE
+    # ==================================================
 
     current_stage = "Outline Design"
+
+    # ==================================================
+    # NEXT GATE
+    # ==================================================
+
     next_gate = "Submission of Outline Design Pack"
 
+    gate_df = df[
+        df["Activity Name"]
+        .astype(str)
+        .str.contains(
+            "Submission of Outline Design Pack",
+            case=False,
+            na=False
+        )
+    ]
+
+    if not gate_df.empty:
+
+        if gate_df["Activity % Complete"].max() >= 100:
+
+            next_gate = "Client Review of Design Pack"
+
+    # ==================================================
+    # PRIMARY DRIVER
+    # ==================================================
+
+    primary_driver = "Programme Delivery"
+
+    if (
+        "Variance - BL1 Finish Date"
+        in df.columns
+    ):
+
+        df["Variance - BL1 Finish Date"] = pd.to_numeric(
+            df["Variance - BL1 Finish Date"],
+            errors="coerce"
+        )
+
+        driver_df = df[
+            (
+                df["Activity % Complete"] < 100
+            )
+            &
+            (
+                df["Variance - BL1 Finish Date"] < 0
+            )
+        ]
+
+        if not driver_df.empty:
+
+            primary_driver = (
+                driver_df
+                .sort_values(
+                    "Total Float",
+                    ascending=True
+                )
+                .iloc[0]["Activity Name"]
+            )
+
+    # ==================================================
+    # INSIGHT
+    # ==================================================
+
     insight = (
-        f"The programme is currently "
-        f"{variance_days} days behind baseline. "
-        f"{outstanding} activities remain incomplete "
-        f"and terminal float is {terminal_float} days."
+        f"The project is in {current_stage}. "
+        f"'{primary_driver}' is currently the "
+        f"primary driver of delay. "
+        f"{outstanding_count} activities remain "
+        f"incomplete and terminal float is "
+        f"{terminal_float} days."
     )
+
+    # ==================================================
+    # RECOMMENDED ACTION
+    # ==================================================
 
     if terminal_float <= 0:
 
         action = (
             "Recover critical path activities and "
-            "prioritise remaining outline design deliverables."
+            "complete outstanding outline design "
+            "deliverables."
         )
 
     elif variance_days > 14:
 
         action = (
-            "Focus on delayed activities and develop "
-            "recovery opportunities."
+            "Prioritise delayed activities and "
+            "implement recovery actions."
         )
 
     else:
@@ -136,63 +222,21 @@ def render(df):
             "progress monitoring."
         )
 
-    # ========================================
+    # ==================================================
     # DISPLAY
-    # ========================================
+    # ==================================================
 
-    left_col, centre_col, right_col = st.columns([1.1, 1.4, 1.2])
-
-    with left_col:
-
-        st.markdown("##### PROJECT HEALTH")
-
-        st.markdown(
-            f"""
-            <div style="
-                color:{colour};
-                font-size:42px;
-                font-weight:700;
-            ">
-                {health}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        st.write(
-            f"Forecast completion has slipped by "
-            f"{variance_days} days against the "
-            f"approved baseline."
-        )
-
-    with centre_col:
-
-        st.markdown("##### INSIGHT")
-        st.write(insight)
-
-        st.markdown("##### RECOMMENDED ACTION")
-        st.write(action)
-
-    with right_col:
-
-        st.markdown(
-            f"""
-            **Current Stage**  
-            {current_stage}
-
-            **Next Gate**  
-            {next_gate}
-
-            **Baseline Finish**  
-            {baseline_finish.strftime("%d %b %Y")}
-
-            **Forecast Finish**  
-            {forecast_finish.strftime("%d %b %Y")}
-
-            **Variance**  
-            {variance_days} Days
-
-            **Terminal Float**  
-            {terminal_float} Days
-            """
-        )
+    st.write(
+        {
+            "health": health,
+            "current_stage": current_stage,
+            "next_gate": next_gate,
+            "baseline_finish": baseline_finish,
+            "forecast_finish": forecast_finish,
+            "variance_days": variance_days,
+            "terminal_float": terminal_float,
+            "primary_driver": primary_driver,
+            "insight": insight,
+            "recommended_action": action
+        }
+    )
