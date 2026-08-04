@@ -30,7 +30,7 @@ def show_overview(asset):
     # PROJECT HEALTH
     # ==================================================
 
-    render_intelligence_panel()
+    render_intelligence_panel(programme_df)
 
     st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
 
