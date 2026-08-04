@@ -16,19 +16,19 @@ def show_overview(asset):
 
     render_project_summary()
 
-    st.markdown("")
+    st.markdown("---")
 
     render_intelligence_panel()
 
-    st.markdown("")
+    st.markdown("---")
 
     render_framework_progress()
 
-    st.markdown("")
+    st.markdown("---")
 
     render_metric_cards()
 
-    st.markdown("")
+    st.markdown("---")
 
     col1, col2 = st.columns([1, 1])
 
