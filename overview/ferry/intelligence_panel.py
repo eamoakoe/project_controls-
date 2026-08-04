@@ -5,20 +5,23 @@ import pandas as pd
 def render(df):
 
     if df is None or df.empty:
-        st.warning("No programme data loaded.")
+        st.warning("No programme data available.")
         return
 
     df = df.copy()
     df.columns = df.columns.astype(str).str.strip()
 
-    required = [
-        "Finish",
+    required_columns = [
         "BL1 Finish",
+        "Finish",
         "Total Float",
         "Activity % Complete"
     ]
 
-    missing = [c for c in required if c not in df.columns]
+    missing = [
+        col for col in required_columns
+        if col not in df.columns
+    ]
 
     if missing:
         st.error(
@@ -26,18 +29,18 @@ def render(df):
         )
         return
 
-    # ==================================
-    # DATA PREP
-    # ==================================
+    # ========================================
+    # CLEAN DATA
+    # ========================================
 
-    df["Finish"] = pd.to_datetime(
-        df["Finish"],
+    df["BL1 Finish"] = pd.to_datetime(
+        df["BL1 Finish"],
         errors="coerce",
         dayfirst=True
     )
 
-    df["BL1 Finish"] = pd.to_datetime(
-        df["BL1 Finish"],
+    df["Finish"] = pd.to_datetime(
+        df["Finish"],
         errors="coerce",
         dayfirst=True
     )
@@ -59,9 +62,9 @@ def render(df):
         errors="coerce"
     ).fillna(0)
 
-    # ==================================
-    # KPI CALCS
-    # ==================================
+    # ========================================
+    # KPI CALCULATIONS
+    # ========================================
 
     baseline_finish = df["BL1 Finish"].max()
 
@@ -75,222 +78,121 @@ def render(df):
         df["Total Float"].min()
     )
 
-    overdue = df[
-        (
-            df["Finish"] < pd.Timestamp.today()
-        )
-        &
-        (
-            df["Activity % Complete"] < 100
-        )
-    ]
+    outstanding = len(
+        df[df["Activity % Complete"] < 100]
+    )
 
-    overdue_count = len(overdue)
-
-    # ==================================
+    # ========================================
     # HEALTH
-    # ==================================
+    # ========================================
 
-    if variance_days <= 7:
+    if variance_days <= 7 and terminal_float > 0:
 
         health = "GREEN"
         colour = "#22c55e"
-        icon = "🟢"
 
     elif variance_days <= 28:
 
         health = "AMBER"
         colour = "#f59e0b"
-        icon = "🟠"
 
     else:
 
         health = "RED"
         colour = "#ef4444"
-        icon = "🔴"
 
-    # ==================================
-    # PROJECT INFO
-    # ==================================
+    # ========================================
+    # PROJECT INFORMATION
+    # ========================================
 
     current_stage = "Outline Design"
-    next_gate = "Scope Freeze"
+    next_gate = "Submission of Outline Design Pack"
 
     insight = (
-        f"Forecast completion has slipped by "
-        f"{variance_days} days against the approved "
-        f"baseline. {overdue_count} activities remain "
-        f"outstanding within the current programme."
+        f"The programme is currently "
+        f"{variance_days} days behind baseline. "
+        f"{outstanding} activities remain incomplete "
+        f"and terminal float is {terminal_float} days."
     )
 
     if terminal_float <= 0:
 
         action = (
-            "Complete outstanding deliverables and "
-            "recover critical path float."
+            "Recover critical path activities and "
+            "prioritise remaining outline design deliverables."
         )
 
     elif variance_days > 14:
 
         action = (
-            "Prioritise delayed activities and validate "
+            "Focus on delayed activities and develop "
             "recovery opportunities."
         )
 
     else:
 
         action = (
-            "Maintain progress momentum and continue "
-            "monitoring delivery performance."
+            "Maintain delivery momentum and continue "
+            "progress monitoring."
         )
 
-    # ==================================
+    # ========================================
     # DISPLAY
-    # ==================================
+    # ========================================
 
-    st.markdown(
-        f"""
-        <div class="dashboard-card">
+    left_col, centre_col, right_col = st.columns([1.1, 1.4, 1.2])
 
+    with left_col:
+
+        st.markdown("##### PROJECT HEALTH")
+
+        st.markdown(
+            f"""
             <div style="
-                display:grid;
-                grid-template-columns:1.2fr 1.5fr 1fr;
-                gap:30px;
-                align-items:start;
+                color:{colour};
+                font-size:42px;
+                font-weight:700;
             ">
-
-                <div>
-
-                    <div style="
-                        color:#94a3b8;
-                        font-size:13px;
-                        font-weight:600;
-                        margin-bottom:10px;
-                    ">
-                        PROJECT HEALTH
-                    </div>
-
-                    <div style="
-                        font-size:42px;
-                        font-weight:700;
-                        color:{colour};
-                    ">
-                        {health}
-                    </div>
-
-                    <div style="
-                        color:white;
-                        margin-top:12px;
-                        line-height:1.7;
-                    ">
-                        Forecast completion has slipped
-                        by <strong>{variance_days} days</strong>
-                        against the approved baseline.
-                    </div>
-
-                </div>
-
-                <div style="
-                    border-left:1px solid #173d73;
-                    padding-left:24px;
-                ">
-
-                    <div style="
-                        color:#60a5fa;
-                        font-weight:600;
-                        margin-bottom:8px;
-                    ">
-                        INSIGHT
-                    </div>
-
-                    <div style="
-                        color:white;
-                        line-height:1.8;
-                    ">
-                        {insight}
-                    </div>
-
-                    <div style="
-                        color:#60a5fa;
-                        font-weight:600;
-                        margin-top:20px;
-                        margin-bottom:8px;
-                    ">
-                        RECOMMENDED ACTION
-                    </div>
-
-                    <div style="
-                        color:white;
-                        line-height:1.8;
-                    ">
-                        {action}
-                    </div>
-
-                </div>
-
-                <div style="
-                    border-left:1px solid #173d73;
-                    padding-left:24px;
-                ">
-
-                    <table style="
-                        width:100%;
-                        color:white;
-                    ">
-
-                        <tr>
-                            <td>Current Stage</td>
-                            <td style="text-align:right;">
-                                {current_stage}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Next Gate</td>
-                            <td style="text-align:right;">
-                                {next_gate}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Baseline Finish</td>
-                            <td style="text-align:right;">
-                                {baseline_finish.strftime('%d %b %Y')}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Forecast Finish</td>
-                            <td style="text-align:right;">
-                                {forecast_finish.strftime('%d %b %Y')}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Variance</td>
-                            <td style="
-                                text-align:right;
-                                color:{colour};
-                                font-weight:700;
-                            ">
-                                {variance_days} Days
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Terminal Float</td>
-                            <td style="text-align:right;">
-                                {terminal_float} Days
-                            </td>
-                        </tr>
-
-                    </table>
-
-                </div>
-
+                {health}
             </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+        st.write(
+            f"Forecast completion has slipped by "
+            f"{variance_days} days against the "
+            f"approved baseline."
+        )
+
+    with centre_col:
+
+        st.markdown("##### INSIGHT")
+        st.write(insight)
+
+        st.markdown("##### RECOMMENDED ACTION")
+        st.write(action)
+
+    with right_col:
+
+        st.markdown(
+            f"""
+            **Current Stage**  
+            {current_stage}
+
+            **Next Gate**  
+            {next_gate}
+
+            **Baseline Finish**  
+            {baseline_finish.strftime("%d %b %Y")}
+
+            **Forecast Finish**  
+            {forecast_finish.strftime("%d %b %Y")}
+
+            **Variance**  
+            {variance_days} Days
+
+            **Terminal Float**  
+            {terminal_float} Days
+            """
+        )
