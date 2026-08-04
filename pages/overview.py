@@ -1,11 +1,6 @@
 import streamlit as st
 
 from overview.ferry.project_summary import render as render_project_summary
-from overview.ferry.intelligence_panel import render as render_intelligence_panel
-from overview.ferry.framework_progress import render as render_framework_progress
-from overview.ferry.metric_cards import render as render_metric_cards
-from overview.ferry.upcoming_milestones import render as render_upcoming_milestones
-from overview.ferry.actions_required import render as render_actions_required
 
 
 def show_overview(asset):
@@ -18,48 +13,106 @@ def show_overview(asset):
 
         return
 
-    # ==========================================
-    # PROJECT HEADER
-    # ==========================================
-
     render_project_summary()
 
-    st.markdown("")
+    st.markdown("---")
 
-    # ==========================================
-    # PROJECT INTELLIGENCE
-    # ==========================================
+    st.markdown("## 🚦 Project Health")
 
-    render_intelligence_panel()
+    st.info(
+        """
+        Status: AMBER
 
-    st.markdown("")
+        Current Stage: Outline Design
 
-    # ==========================================
-    # FRAMEWORK PROGRESS
-    # ==========================================
+        Next Gate: Scope Freeze
 
-    render_framework_progress()
+        Baseline Finish: 24 Sep 2026
 
-    st.markdown("")
+        Forecast Finish: 20 Oct 2026
 
-    # ==========================================
-    # KPI METRICS
-    # ==========================================
+        Variance: -18 Days
 
-    render_metric_cards()
+        Terminal Float: 0 Days
+        """
+    )
 
-    st.markdown("")
+    st.markdown("---")
 
-    # ==========================================
-    # MILESTONES + ACTIONS
-    # ==========================================
+    st.markdown("## 🛣 Framework Progress")
 
-    col1, col2 = st.columns([1, 1])
+    c1, c2, c3, c4, c5 = st.columns(5)
+
+    with c1:
+        st.success("✅ Feasibility")
+
+    with c2:
+        st.success("✅ Concept Design")
+
+    with c3:
+        st.warning("🟠 Outline Design")
+
+    with c4:
+        st.info("⚪ Detailed Design")
+
+    with c5:
+        st.info("⚪ Construction Support")
+
+    st.markdown("---")
+
+    st.markdown("## 📊 Key Metrics")
+
+    m1, m2, m3, m4, m5, m6 = st.columns(6)
+
+    m1.metric(
+        "Today",
+        "03 Aug 2026"
+    )
+
+    m2.metric(
+        "Health",
+        "AMBER"
+    )
+
+    m3.metric(
+        "Forecast Finish",
+        "20 Oct 2026"
+    )
+
+    m4.metric(
+        "Variance",
+        "-18 Days"
+    )
+
+    m5.metric(
+        "Float",
+        "0 Days"
+    )
+
+    m6.metric(
+        "Comms",
+        "1 Open"
+    )
+
+    st.markdown("---")
+
+    col1, col2 = st.columns(2)
 
     with col1:
 
-        render_upcoming_milestones()
+        st.markdown("## 📅 Upcoming Milestones")
+
+        st.write("• Scope Freeze - 14 Aug 2026")
+        st.write("• Client Review Submission - 23 Sep 2026")
+        st.write("• Outline Design Acceptance - 06 Oct 2026")
+        st.write("• Detailed Design Start - 07 Oct 2026")
+        st.write("• Project Completion - 20 Oct 2026")
 
     with col2:
 
-        render_actions_required()
+        st.markdown("## 🚨 Actions Required")
+
+        st.write("• Respond to outstanding RFI")
+        st.write("• Client review pack due")
+        st.write("• Deliverables awaiting acceptance")
+        st.write("• Baseline variance exceeds threshold")
