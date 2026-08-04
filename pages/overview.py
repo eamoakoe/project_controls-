@@ -74,7 +74,7 @@ def show_overview(asset):
 
         st.markdown("### Delivery Status")
 
-        render_pie_ferry()
+        render_pie_ferry(programme_df)
 
     with right_col:
 
