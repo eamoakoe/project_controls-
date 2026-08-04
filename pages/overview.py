@@ -8,7 +8,7 @@ from overview.ferry.upcoming_milestones import render as render_upcoming_milesto
 from overview.ferry.actions_required import render as render_actions_required
 
 
-def show_overview(asset, programme_df):
+def show_overview(asset):
 
     if asset != "Ferry PS":
         st.info(f"{asset} overview not built yet.")
@@ -20,40 +20,36 @@ def show_overview(asset, programme_df):
 
     render_project_summary()
 
-    st.markdown("")
+    st.markdown("---")
 
     # ==================================
-    # PROJECT HEALTH
+    # INTELLIGENCE PANEL
     # ==================================
 
-    render_intelligence_panel(programme_df)
+    render_intelligence_panel()
 
-    st.markdown("")
+    st.markdown("---")
 
     # ==================================
     # FRAMEWORK PROGRESS
     # ==================================
 
-    render_framework_progress(programme_df)
+    render_framework_progress()
 
-    st.markdown("")
+    st.markdown("---")
 
     # ==================================
-    # KPI CARDS
+    # KPI METRICS
     # ==================================
 
-    render_metric_cards(programme_df)
+    render_metric_cards()
 
-    st.markdown("")
+    st.markdown("---")
 
     # ==================================
     # MILESTONES / ACTIONS
     # ==================================
 
-    col1, col2 = st.columns([1, 1])
+    col1, col2 = st.columns(2)
 
-    with col1:
-        render_upcoming_milestones(programme_df)
-
-    with col2:
-        render_actions_required(programme_df)
+    with col1
