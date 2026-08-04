@@ -33,11 +33,25 @@ except FileNotFoundError:
 # LOAD DATA
 # ==================================================
 
-# Replace this with your actual data source
-programme_df = pd.DataFrame()
+# Temporary placeholder dataframe
+# Replace with CL31 / CL32 data later
 
-# Example:
-# programme_df = pd.read_excel("data/programme_data.xlsx")
+programme_df = pd.DataFrame(
+    [
+        {
+            "SnapshotDate": "2026-02-01",
+            "Finish": "2026-12-31",
+            "Total Float": 10,
+            "Activity % Complete": 75
+        },
+        {
+            "SnapshotDate": "2026-06-01",
+            "Finish": "2027-01-15",
+            "Total Float": 5,
+            "Activity % Complete": 80
+        }
+    ]
+)
 
 # ==================================================
 # SIDEBAR
