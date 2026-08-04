@@ -8,63 +8,74 @@
 
 
 /* ==========================================
+   APP BACKGROUND
+========================================== */
+
+.stApp {
+
+    background:
+        radial-gradient(
+            circle at top left,
+            #0b2b6b 0%,
+            #04132f 30%,
+            #031028 100%
+        );
+
+    color: white;
+}
+
+
+/* ==========================================
+   APP CONTAINER
+========================================== */
+
+[data-testid="stAppViewContainer"] {
+
+    background:
+        radial-gradient(
+            circle at top left,
+            #0b2b6b 0%,
+            #04132f 30%,
+            #031028 100%
+        );
+}
+
+
+/* ==========================================
+   MAIN CONTENT AREA
+========================================== */
+
+.main .block-container {
+
+    max-width: 1600px;
+
+    padding-top: 1rem;
+
+    padding-left: 2rem;
+
+    padding-right: 2rem;
+
+    background: transparent;
+}
+
+
+/* ==========================================
    SIDEBAR
 ========================================== */
 
 section[data-testid="stSidebar"] {
 
-    background: linear-gradient(
-        180deg,
-        #050A30 0%,
-        #081A47 50%,
-        #050A30 100%
-    );
+    background:
+        linear-gradient(
+            180deg,
+            #04132f 0%,
+            #081b42 50%,
+            #031028 100%
+        );
 
     width: 340px !important;
-}
 
-
-/* ==========================================
-   SECTION HEADERS
-========================================== */
-
-section[data-testid="stSidebar"] label {
-
-    color: white !important;
-
-    font-size: 15px !important;
-
-    font-weight: 600 !important;
-}
-
-
-/* ==========================================
-   RADIO CONTAINERS
-========================================== */
-
-div[role="radiogroup"] {
-
-    background: rgba(255,255,255,0.06);
-
-    padding: 15px;
-
-    border-radius: 12px;
-
-    margin-bottom: 10px;
-}
-
-
-/* ==========================================
-   RADIO OPTION TEXT
-========================================== */
-
-div[role="radiogroup"] p {
-
-    color: white !important;
-
-    font-size: 15px !important;
-
-    font-weight: 500 !important;
+    border-right: 1px solid #173d73;
 }
 
 
@@ -79,14 +90,239 @@ section[data-testid="stSidebar"] {
 
 
 /* ==========================================
+   SECTION HEADERS
+========================================== */
+
+section[data-testid="stSidebar"] label {
+
+    color: #cbd5e1 !important;
+
+    font-size: 14px !important;
+
+    font-weight: 700 !important;
+
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+}
+
+
+/* ==========================================
+   RADIO CONTAINERS
+========================================== */
+
+div[role="radiogroup"] {
+
+    background: rgba(255,255,255,0.04);
+
+    border: 1px solid rgba(96,165,250,0.15);
+
+    border-radius: 12px;
+
+    padding: 14px;
+
+    margin-bottom: 12px;
+}
+
+
+/* ==========================================
+   RADIO TEXT
+========================================== */
+
+div[role="radiogroup"] p {
+
+    color: white !important;
+
+    font-size: 15px !important;
+
+    font-weight: 500 !important;
+}
+
+
+/* ==========================================
    DIVIDERS
 ========================================== */
 
 section[data-testid="stSidebar"] hr {
 
-    border-color: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.1);
 
     margin-top: 18px;
 
     margin-bottom: 18px;
+}
+
+
+/* ==========================================
+   DASHBOARD CARD
+========================================== */
+
+.dashboard-card {
+
+    background:
+        linear-gradient(
+            135deg,
+            #081938 0%,
+            #071a45 100%
+        );
+
+    border: 1px solid #173d73;
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    margin-bottom: 16px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.25);
+}
+
+
+/* ==========================================
+   METRIC CARD
+========================================== */
+
+.metric-card {
+
+    background:
+        linear-gradient(
+            135deg,
+            #081938 0%,
+            #071a45 100%
+        );
+
+    border: 1px solid #173d73;
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    height: 120px;
+}
+
+
+/* ==========================================
+   DATAFRAMES
+========================================== */
+
+.stDataFrame {
+
+    border: 1px solid #173d73;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+
+/* ==========================================
+   STREAMLIT METRICS
+========================================== */
+
+[data-testid="metric-container"] {
+
+    background:
+        linear-gradient(
+            135deg,
+            #081938 0%,
+            #071a45 100%
+        );
+
+    border: 1px solid #173d73;
+
+    border-radius: 14px;
+
+    padding: 18px;
+}
+
+
+/* ==========================================
+   HEADINGS
+========================================== */
+
+h1 {
+
+    color: white !important;
+
+    font-weight: 700 !important;
+}
+
+h2 {
+
+    color: white !important;
+
+    font-weight: 600 !important;
+}
+
+h3 {
+
+    color: #cbd5e1 !important;
+
+    font-weight: 600 !important;
+}
+
+
+/* ==========================================
+   TEXT
+========================================== */
+
+p,
+span,
+div {
+
+    color: inherit;
+}
+
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.stButton > button {
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: white;
+
+    border: none;
+
+    border-radius: 10px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SUCCESS
+========================================== */
+
+.stSuccess {
+
+    border-left: 4px solid #22c55e;
+}
+
+
+/* ==========================================
+   WARNING
+========================================== */
+
+.stWarning {
+
+    border-left: 4px solid #f59e0b;
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.stError {
+
+    border-left: 4px solid #ef4444;
 }
