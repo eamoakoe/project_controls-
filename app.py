@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 from components.sidebar import render_sidebar
 from pages.overview import show_overview
@@ -19,17 +20,24 @@ st.set_page_config(
 # ==================================================
 
 try:
-
     with open("assets/styles.css") as f:
-
         st.markdown(
             f"<style>{f.read()}</style>",
             unsafe_allow_html=True
         )
 
 except FileNotFoundError:
-
     st.warning("styles.css not found")
+
+# ==================================================
+# LOAD DATA
+# ==================================================
+
+# Replace this with your actual data source
+programme_df = pd.DataFrame()
+
+# Example:
+# programme_df = pd.read_excel("data/programme_data.xlsx")
 
 # ==================================================
 # SIDEBAR
