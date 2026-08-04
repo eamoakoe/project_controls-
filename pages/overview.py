@@ -14,42 +14,26 @@ def show_overview(asset):
         st.info(f"{asset} overview not built yet.")
         return
 
-    # ==================================
-    # PROJECT SUMMARY
-    # ==================================
-
     render_project_summary()
 
-    st.markdown("---")
-
-    # ==================================
-    # INTELLIGENCE PANEL
-    # ==================================
+    st.markdown("")
 
     render_intelligence_panel()
 
-    st.markdown("---")
-
-    # ==================================
-    # FRAMEWORK PROGRESS
-    # ==================================
+    st.markdown("")
 
     render_framework_progress()
 
-    st.markdown("---")
-
-    # ==================================
-    # KPI METRICS
-    # ==================================
+    st.markdown("")
 
     render_metric_cards()
 
-    st.markdown("---")
+    st.markdown("")
 
-    # ==================================
-    # MILESTONES / ACTIONS
-    # ==================================
+    col1, col2 = st.columns([1, 1])
 
-    col1, col2 = st.columns(2)
+    with col1:
+        render_upcoming_milestones()
 
-    with col1
+    with col2:
+        render_actions_required()
